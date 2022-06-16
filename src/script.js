@@ -1,25 +1,23 @@
-
-
 import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import gsap from 'gsap'
 import * as dat from 'dat.gui'
 import { Vector3 } from './vectors';
 import { Matrix3, Mesh } from 'three'
 import Rocket from './physics/rocket'
+import {Vector} from './physics/vector'
 
 
 /**
  * Base
  */
 const parameters = {
-    color: 0xff0000,
-    spin: () =>
-    {
-        gsap.to(sphere.rotation, 1, { y: mesh.rotation.y + Math.PI * 2 })
-    }
+  color: 0xff0000,
+  spin: () => {
+    gsap.to(sphere.rotation, 1, { y: mesh.rotation.y + Math.PI * 2 })
+  }
 }
 
 // Canvas
@@ -34,31 +32,30 @@ const rocket = new Rocket()
  * Object
  */
 const sat_arry = []
-const satellitee= new THREE.Mesh();
+const satellitee = new THREE.Mesh();
 rocket.mesh = new THREE.Mesh()
 
-const gltfLoader=new GLTFLoader()
+const gltfLoader = new GLTFLoader()
 //  gltfLoader.load('/models/Duck/glTF/Duck.gltf',
-  gltfLoader.load('/models/saturn_rocket/scene.gltf',
-  async (gltf)=>
- {
- console.log('jj');
-     gltf.scene.scale.set(0.05,0.05,0.05)
-     gltf.scene.position.set(0,0,0) 
-     rocket.mesh.add(gltf.scene)
-     scene.add(rocket.mesh)
-     sat_arry.push(rocket.mesh)
-     //console.log(satellitee);
-    
-     
-     //satellitee.children[0].position
-    },
- ()=>{console.log('success')},
-     )
+gltfLoader.load('/models/saturn_rocket/scene.gltf',
+  async (gltf) => {
+    console.log('jj');
+    gltf.scene.scale.set(0.05, 0.05, 0.05)
+    gltf.scene.position.set(0, 0, 0)
+    rocket.mesh.add(gltf.scene)
+    scene.add(rocket.mesh)
+    sat_arry.push(rocket.mesh)
+    //console.log(satellitee);
+
+
+    //satellitee.children[0].position
+  },
+  () => { console.log('success') },
+)
 const image = new Image()
-const texture= new THREE.Texture(image);
-image.onload=()=>{texture.needsUpdate=true}
-image.src='/textures/a.jpg';
+const texture = new THREE.Texture(image);
+image.onload = () => { texture.needsUpdate = true }
+image.src = '/textures/a.jpg';
 //const AxesHelper =new THREE.AxesHelper(100)
 //scene.add(AxesHelper)
 //
@@ -89,105 +86,104 @@ scene.add(light);
 /**
  * Sizes
  */
-const SpaceTexture =new THREE.TextureLoader().load('/textures/space1.jpg');
-scene.background=SpaceTexture;
+const SpaceTexture = new THREE.TextureLoader().load('/textures/space1.jpg');
+scene.background = SpaceTexture;
 
 
-const earthTexture =new THREE.TextureLoader().load('/textures/earth.jpg');
+const earthTexture = new THREE.TextureLoader().load('/textures/earth.jpg');
 
 
-const earth =new THREE.Mesh(
+const earth = new THREE.Mesh(
 
-new THREE.SphereGeometry(40,32,32),
-new THREE.MeshBasicMaterial({
-  side: THREE.DoubleSide,
-map:earthTexture,opacity:0,
- 
-})
+  new THREE.SphereGeometry(40, 32, 32),
+  new THREE.MeshBasicMaterial({
+    side: THREE.DoubleSide,
+    map: earthTexture, opacity: 0,
+
+  })
 
 );
 scene.add(earth);
 
-const SkyTexture =new THREE.TextureLoader().load('/textures/ff.jpg');
+const SkyTexture = new THREE.TextureLoader().load('/textures/ff.jpg');
 
 
-const sky =new THREE.Mesh(
+const sky = new THREE.Mesh(
 
-new THREE.SphereGeometry(19.999,32,32),
-new THREE.MeshBasicMaterial({
-map:SkyTexture,side: THREE.DoubleSide,
-opacity:0,
- 
-})
+  new THREE.SphereGeometry(19.999, 32, 32),
+  new THREE.MeshBasicMaterial({
+    map: SkyTexture, side: THREE.DoubleSide,
+    opacity: 0,
+
+  })
 
 );
 scene.add(sky);
 
-const Sky1Texture =new THREE.TextureLoader().load('/textures/sky2.jpg');
+const Sky1Texture = new THREE.TextureLoader().load('/textures/sky2.jpg');
 
 
-const sky1 =new THREE.Mesh(
+const sky1 = new THREE.Mesh(
 
-new THREE.SphereGeometry(30,32,32),
-new THREE.MeshBasicMaterial({
-map:Sky1Texture,side: THREE.DoubleSide,opacity:0,
- 
-})
+  new THREE.SphereGeometry(30, 32, 32),
+  new THREE.MeshBasicMaterial({
+    map: Sky1Texture, side: THREE.DoubleSide, opacity: 0,
+
+  })
 
 );
 scene.add(sky1);
 
-const Sky2Texture =new THREE.TextureLoader().load('/textures/space.jpg');
+const Sky2Texture = new THREE.TextureLoader().load('/textures/space.jpg');
 
 
-const sky2 =new THREE.Mesh(
+const sky2 = new THREE.Mesh(
 
-new THREE.SphereGeometry(35,32,32),
-new THREE.MeshBasicMaterial({
-map:Sky2Texture,side: THREE.DoubleSide,opacity:0,
- 
-})
+  new THREE.SphereGeometry(35, 32, 32),
+  new THREE.MeshBasicMaterial({
+    map: Sky2Texture, side: THREE.DoubleSide, opacity: 0,
+
+  })
 
 );
 scene.add(sky2);
 
-const Sky3Texture =new THREE.TextureLoader().load('/textures/a.jpg');
-const land =new THREE.Mesh(
+const Sky3Texture = new THREE.TextureLoader().load('/textures/a.jpg');
+const land = new THREE.Mesh(
 
-    new THREE.CircleGeometry(19.9,32,32),
-    new THREE.MeshBasicMaterial({
-   side: THREE.DoubleSide,opacity:0,
-    map:Sky3Texture,
-     
-    })
-    
-    );
-    scene.add(land);
-    
-    land.rotation.x = Math.PI / 1.9;
-    land.position.z = 0
-    land.position.x = 0
-    land.position.y = 0
-  
+  new THREE.CircleGeometry(19.9, 32, 32),
+  new THREE.MeshBasicMaterial({
+    side: THREE.DoubleSide, opacity: 0,
+    map: Sky3Texture,
+
+  })
+
+);
+scene.add(land);
+
+land.rotation.x = Math.PI / 1.9;
+land.position.z = 0
+land.position.x = 0
+land.position.y = 0
+
 
 const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight
+  width: window.innerWidth,
+  height: window.innerHeight
 }
 
-window.addEventListener('resize', () =>
-{
-    // Update sizes
-    sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
-    
-    // Update camera
-    camera.aspect = sizes.width / sizes.height
-    camera.updateProjectionMatrix()
-    
-    // Update renderer
-    renderer.setSize(sizes.width, sizes.height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+window.addEventListener('resize', () => {
+  // Update sizes
+  sizes.width = window.innerWidth
+  sizes.height = window.innerHeight
+
+  // Update camera
+  camera.aspect = sizes.width / sizes.height
+  camera.updateProjectionMatrix()
+
+  // Update renderer
+  renderer.setSize(sizes.width, sizes.height)
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
 /**
@@ -205,7 +201,7 @@ controls.enableDamping = true
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
-    canvas: canvas
+  canvas: canvas
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -214,8 +210,8 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
  * Debug
  */
 const gui = new dat.GUI({
-    // closed: true,
-    width: 400
+  // closed: true,
+  width: 400
 })
 // gui.hide()
 //gui.add(mesh.position, 'y').min(- 3).max(3).step(0.01).name('elevation')
@@ -223,49 +219,48 @@ const gui = new dat.GUI({
 //gui.add(material, 'wireframe')
 
 gui
-.addColor(parameters, 'color')
-    .onChange(() =>
-    {
-        material.color.set(parameters.color)
-    })
-    
+  .addColor(parameters, 'color')
+  .onChange(() => {
+    material.color.set(parameters.color)
+  })
+
 gui.add(parameters, 'spin')
 
 
 function setupKeyControls() {
-  
-    document.onkeydown = function(e) {
-      switch (e.keyCode) {
-        case 37:
-          rocket.force_angle += 1;
-          
+
+  document.onkeydown = function (e) {
+    switch (e.keyCode) {
+      case 37:
+        rocket.force_angle += 1;
+
         break;
-        case 38:
-      //   thrustMagnitude.v += 0.01;
+      case 38:
+        //   thrustMagnitude.v += 0.01;
         break;
-        case 39:
-          rocket.force_angle -= 1;
+      case 39:
+        rocket.force_angle -= 1;
         break;
-        case 40:
+      case 40:
         //thrustMagnitude.v -= 0.01;
         break;
-      }
-    };
-  }
- 
+    }
+  };
+}
 
 
-rocket.engineType=1
-rocket.force_angle=Math.PI/2;
-rocket.rocketDiameter=2;
-rocket.rocket_mass=200
-rocket.fuel_mass=20000;
-rocket.dragCoefficient=0.75
-rocket.liftCoeff=1;
-rocket.burnTime=210;
-rocket.exhaust_Area=2;
-rocket.exhaust_Pressure=9;
-rocket.numberOfEngines=10
+
+rocket.engineType = 1
+rocket.force_angle = Math.PI / 2;
+rocket.rocketDiameter = 2;
+rocket.rocket_mass = 2000
+rocket.fuel_mass = 20;
+rocket.dragCoefficient = 0.75
+rocket.liftCoeff = 1;
+rocket.burnTime = 210;
+rocket.exhaust_Area = 2;
+rocket.exhaust_Pressure = 9;
+rocket.numberOfEngines = 10
 rocket.check_engine()
 
 /**
@@ -275,37 +270,57 @@ rocket.check_engine()
 const clock = new THREE.Clock()
 let oldElapsedTime = 0;
 
-const tick = async() =>
-{
+const tick = async () => {
 
-    setupKeyControls()
+  setupKeyControls()
 
-    const elapsedTime = clock.getElapsedTime()
-    const delteTime = elapsedTime - oldElapsedTime;    
-    oldElapsedTime = elapsedTime;
+  const elapsedTime = clock.getElapsedTime()
+  const delteTime = elapsedTime - oldElapsedTime;
+  oldElapsedTime = elapsedTime;
 
+
+  rocket.new_velocity(delteTime)
+  rocket.new_position(delteTime)
+
+  //rocket.mesh.position.add(rocket.thrust().clone().multiplyScalar(delteTime));
+
+  console.log(rocket)
+  document.getElementById("rocket-speed").innerText =
+    rocket.velocity.getMagnitude().toFixed(3) + " ms";
+    document.getElementById("rocket-total-force").innerText =
+    rocket.total_force.getMagnitude().toFixed(3) + " N";
     
-    rocket.new_velocity(delteTime)
-    rocket.new_position(delteTime)
-   
-    //rocket.mesh.position.add(rocket.thrust().clone().multiplyScalar(delteTime));
-    
-     console.log(rocket)
-     //console.log(satellitee.position)
+  document.getElementById("rocket-total-mass").innerText =
+    rocket.total_mass.toFixed(3) + " kg";
+  document.getElementById("rocket-force_angle").innerText =
+    rocket.force_angle.toFixed(3) + " Radian ";
+  document.getElementById("rocket-fuel-mass").innerText =
+    rocket.fuel_mass.toFixed(3) + " kg ";
+  document.getElementById("rocket-mass").innerText =
+    rocket.rocket_mass.toFixed(3) + " kg ";
+  document.getElementById("rocket-engines").innerText =
+    rocket.numberOfEngines.toFixed(3);
+  if (rocket.engineType == 1) {
+    document.getElementById("rocket-engine-type").innerText = "F-1";
+  } else {
+    document.getElementById("rocket-engine-type").innerText = "J-1";
+  }
 
-     camera.position.y=rocket.mesh.position.y 
-    controls.target.y=rocket.mesh.position.y
-    controls.target.x=rocket.mesh.position.x
-    controls.target.z=rocket.mesh.position.z
+  //console.log(satellitee.position)
 
-    // Update controls
-    controls.update()
-    
-    // Render
-    renderer.render(scene, camera)
-    
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick)
+  camera.position.y = rocket.mesh.position.y
+  controls.target.y = rocket.mesh.position.y
+  controls.target.x = rocket.mesh.position.x
+  controls.target.z = rocket.mesh.position.z
+
+  // Update controls
+  controls.update()
+
+  // Render
+  renderer.render(scene, camera)
+
+  // Call tick again on the next frame
+  window.requestAnimationFrame(tick)
 
 }
 

@@ -1,11 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>10 - Debug UI</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>12 - Materials</title>
+    <style>
+      .flex {
+        display: flex;
+        flex-flow: row;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+      }
+      .flex-1 {
+        flex: 1;
+      }
+      .container {
+        position: absolute;
+        z-index: 999;
+        color: white;
+        background: rgb(14, 22, 22);
+        padding: 20px;
+        width: 300px;
+        border: 3px solid rgb(5, 247, 255);
+        border-radius: 10px;
+        bottom: 30px;
+        left: 50px;
+        color: rgb(5, 247, 255);
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
     <canvas class="webgl"></canvas>
-</body>
+    <div class="container">
+      <div class="flex">
+        <div class="flex-1">Rocket Speed</div>
+        <div id="rocket-speed" class="flex-1"></div>
+      </div>
+      <div class="flex">
+        <div class="flex-1">Rocket Total Force</div>
+        <div id="rocket-total-force" class="flex-1"></div>
+      </div>
+      <div class="flex">
+        <div class="flex-1">Engines Number</div>
+        <div id="rocket-engines" class="flex-1"></div>
+      </div>
+      <div class="flex">
+        <div class="flex-1">Type Of Engine</div>
+        <div id="rocket-engine-type" class="flex-1"></div>
+      </div>
+      <div class="flex">
+        <div class="flex-1">Total Mass</div>
+        <div id="rocket-total-mass" class="flex-1"></div>
+      </div>
+      <div class="flex">
+        <div class="flex-1">Fuel Mass</div>
+        <div id="rocket-fuel-mass" class="flex-1"></div>
+      </div>
+      <div class="flex">
+        <div class="flex-1">Rocket Mass</div>
+        <div id="rocket-mass" class="flex-1"></div>
+      </div>
+      <div class="flex">
+        <div class="flex-1">Force Angle</div>
+        <div id="rocket-force_angle" class="flex-1"></div>
+      </div>
+    </div>
+  </body>
 </html>

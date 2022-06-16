@@ -1,5 +1,5 @@
 import Atmosphere from "./atmosphere";
-//import vector from "./vector";
+import {Vector} from '../physics/vector';
  import * as THREE from 'three'
 import Parameters from "../script.js";
 import { Vector3,Mesh } from "three";
@@ -51,19 +51,19 @@ class Rocket {
         this.exhaust_Area=exhaust_Area;
         this.exhaust_Pressure=exhaust_Pressure;
 
-        this.velocity=new Vector3(0,0,0)
-        this.acceleration= new Vector3(0,0,0);
+        this.velocity=new Vector(0,0,0)
+        this.acceleration= new Vector(0,0,0);
         this.thrustMagnitude=thrustMagnitude;
 
         this.rocket_mass=rocket_mass;
         this.fuel_mass=fuel_mass;
         this.total_mass=this.total_mass;
         this.mass_flow_rate=mass_flow_rate;
-        this.wvector=new Vector3(0,0,0);
-        this.lvector=new Vector3(0,0,0);
-        this.tvector=new Vector3(0,0,0);;
-        this.dvector=new Vector3(0,0,0);
-        this.total_force= new Vector3(0,0,0);
+        this.wvector=new Vector(0,0,0);
+        this.lvector=new Vector(0,0,0);
+        this.tvector=new Vector(0,0,0);;
+        this.dvector=new Vector(0,0,0);
+        this.total_force= new Vector(0,0,0);
         this.altitude_status;
         
         this.atmosphere = new Atmosphere(this.altitude);
@@ -134,7 +134,7 @@ rocketArea(){
 
 
     weight() {
-        let gravity = new Vector3(
+        let gravity = new Vector(
             this.mesh.position.x,
             this.mesh.position.y + 6371000,
             this.mesh.position.z
@@ -192,7 +192,7 @@ rocketArea(){
         this.thrustMagnitude = this.massFlowRate() * this.exhaustVelocity() 
         +  (this.exhaust_Pressure - this.atmosphere.getPressure()) *-1* this.exhaust_Area;
         //Math.atan2(this.total_force.y / this.total_force.x, 0)
-        this.tvector = new Vector3(
+        this.tvector = new Vector(
             Math.cos(this.force_angle) * this.thrustMagnitude,
             Math.sin(this.force_angle) * this.thrustMagnitude,
             0

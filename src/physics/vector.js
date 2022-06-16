@@ -38,4 +38,4 @@ class Vector extends Vector3 {
     }
 
 } 
-//export default Vector;
+export {Vector}
