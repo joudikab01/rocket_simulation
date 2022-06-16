@@ -195,11 +195,11 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.z = 10
+camera.position.z = 3
 scene.add(camera)
 // Controls
 const controls = new OrbitControls(camera, canvas)
-// controls.enableDamping = true
+controls.enableDamping = true
 
 /**
  * Renderer
@@ -265,7 +265,7 @@ rocket.liftCoeff=1;
 rocket.burnTime=210;
 rocket.exhaust_Area=2;
 rocket.exhaust_Pressure=9;
-rocket.numberOfEngines=1
+rocket.numberOfEngines=10
 rocket.check_engine()
 
 /**
@@ -292,6 +292,12 @@ const tick = async() =>
     
      console.log(rocket)
      //console.log(satellitee.position)
+
+     camera.position.y=rocket.mesh.position.y 
+    controls.target.y=rocket.mesh.position.y
+    controls.target.x=rocket.mesh.position.x
+    controls.target.z=rocket.mesh.position.z
+
     // Update controls
     controls.update()
     
