@@ -1,0 +1,11 @@
+Model Information:
+* title:	Saturn Rocket
+* source:	https://sketchfab.com/3d-models/saturn-rocket-c095843eaf6a4d7a871b34ca948749db
+* author:	Intelligent Education (https://sketchfab.com/intelligenteducation)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Saturn Rocket" (https://sketchfab.com/3d-models/saturn-rocket-c095843eaf6a4d7a871b34ca948749db) by Intelligent Education (https://sketchfab.com/intelligenteducation) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
