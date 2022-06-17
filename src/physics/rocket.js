@@ -1,8 +1,8 @@
 import Atmosphere from "./atmosphere";
-import {Vector} from '../physics/vector';
- import * as THREE from 'three'
+import { Vector } from '../physics/vector';
+import * as THREE from 'three'
 import Parameters from "../script.js";
-import { Vector3,Mesh } from "three";
+import { Vector3, Mesh } from "three";
 //const {Parameters} = require('../script.js');
 class Rocket {
     constructor(
@@ -22,58 +22,67 @@ class Rocket {
         engineType,
         liftCoeff,
 
-     
+
         altitude,
 
         thrustMagnitude,
 
         force_angle,
-      
+
         numberOfEngines,
-        //stability_margin
+        //stability_margin,
+    
+        
     ) {
-        this.numberOfEngines=numberOfEngines
-        this.force_angle=force_angle
-        this.scale=0.01;
+        this.numberOfEngines = numberOfEngines
+        this.force_angle = force_angle
+        this.scale = 0.01;
         this.mesh = mesh;
-        this.liftCoeff = liftCoeff;             
+        this.liftCoeff = liftCoeff;
         this.rocketDiameter = rocketDiameter;
-       
+
         this.burnTime = burnTime;
-        
+
         this.dragCoefficient = dragCoefficient;
-        
+
         this.engineType = engineType;
-        this.launch_altitude=altitude;
-        this.altitude=altitude;
+        this.launch_altitude = altitude;
+        this.altitude = altitude;
 
         this.exhaust_Velocity;
-        this.exhaust_Area=exhaust_Area;
-        this.exhaust_Pressure=exhaust_Pressure;
+        this.exhaust_Area = exhaust_Area;
+        this.exhaust_Pressure = exhaust_Pressure;
 
-        this.velocity=new Vector(0,0,0)
-        this.acceleration= new Vector(0,0,0);
-        this.thrustMagnitude=thrustMagnitude;
+        this.velocity = new Vector(0, 0, 0)
+        this.acceleration = new Vector(0, 0, 0);
+        this.thrustMagnitude = thrustMagnitude;
 
-        this.rocket_mass=rocket_mass;
-        this.fuel_mass=fuel_mass;
-        this.total_mass=this.total_mass;
-        this.mass_flow_rate=mass_flow_rate;
-        this.wvector=new Vector(0,0,0);
-        this.lvector=new Vector(0,0,0);
-        this.tvector=new Vector(0,0,0);;
-        this.dvector=new Vector(0,0,0);
-        this.total_force= new Vector(0,0,0);
+        this.rocket_mass = rocket_mass;
+        this.fuel_mass = fuel_mass;
+        this.total_mass = this.total_mass;
+        this.mass_flow_rate = mass_flow_rate;
+        this.wvector = new Vector(0, 0, 0);
+        this.lvector = new Vector(0, 0, 0);
+        this.tvector = new Vector(0, 0, 0);;
+        this.dvector = new Vector(0, 0, 0);
+        this.total_force = new Vector(0, 0, 0);
+        this.torquevector = new Vector(0, 0, 0);
         this.altitude_status;
-        
+
         this.atmosphere = new Atmosphere(this.altitude);
 
-        //this.stability_margin = stability_margin
-    
+        // this.stability_margin = stability_margin
+        // this.stabilityvector = new Vector3(0, 0, 0)
+        // this.interia 
+        // this.angular_acceleration = new Vector(0,0,0)
+        // this.angular_velocity = new Vector(0,0,0)
+        // this.quaternion = new THREE.Quaternion();
+
+
     }
 
-    check_engine(){
-       // type ==1 refrenced for engine f-1 
+    check_engine() {
+        // type ==1 refrenced for engine f-1 
         if (this.engineType == 1) {
             this.p0 = 7000000;
             this.at = 0.672;
@@ -84,52 +93,54 @@ class Rocket {
             this.t0 = 3558.34;
             this.r = this.r4 / this.mw;
         }
-        else{
+        else {
             this.p0 = 5260700;
             this.at = 0.109;
             this.ro = 2.3693;
             this.gamma = 1.1455;
-            this.r4 = 8314; 
+            this.r4 = 8314;
             this.mw = 12.631;
             this.t0 = 3372.93;
             this.r = this.r4 / this.mw;
         }
-        this.total_mass=this.fuel_mass+this.rocket_mass
+        this.total_mass = this.fuel_mass + this.rocket_mass
 
     }
-   
-rocketArea(){
-    return 0.25 * Math.PI * this.rocketDiameter * this.rocketDiameter;
-}
+
+    rocketArea() {
+        return 0.25 * Math.PI * this.rocketDiameter * this.rocketDiameter;
+    }
+
+    
 
     massFlowRate() {
         //console.log(this.r)
-        this.mass_flow_rate=
-             this.p0 *
-             this.at *
-             Math.sqrt( this.gamma / (this.t0 * this.r)
-                 * Math.pow(2 / (this.gamma + 1),
-                     ((this.gamma + 1) / (this.gamma - 1))  )) ; 
-        
-                     //console.log(this.massFlowRate())
+        this.mass_flow_rate =
+            this.p0 *
+            this.at *
+            Math.sqrt(this.gamma / (this.t0 * this.r)
+                * Math.pow(2 / (this.gamma + 1),
+                    ((this.gamma + 1) / (this.gamma - 1))));
+
+        //console.log(this.massFlowRate())
         return this.mass_flow_rate
-         
-     }
+
+    }
 
 
-     exhaustVelocity() { 
-           this.exhaust_Velocity =Math.sqrt(
-               this.t0 *
-               this.r *
-               2 * this.gamma *
-               (1 -
-                   Math.pow(
-                       this.exhaust_Pressure / this.p0,
-                       (this.gamma - 1) / this.gamma)
-               ) / (this.mw * (this.gamma - 1))
-           );
-           return this.exhaust_Velocity;
-       }
+    exhaustVelocity() {
+        this.exhaust_Velocity = Math.sqrt(
+            this.t0 *
+            this.r *
+            2 * this.gamma *
+            (1 -
+                Math.pow(
+                    this.exhaust_Pressure / this.p0,
+                    (this.gamma - 1) / this.gamma)
+            ) / (this.mw * (this.gamma - 1))
+        );
+        return this.exhaust_Velocity;
+    }
 
 
 
@@ -140,24 +151,24 @@ rocketArea(){
             this.mesh.position.z
 
         );
-        
-        let k = gravity.length(); 
+
+        let k = gravity.length();
         // if(k==637100)
         // {
         //     this.altitude_status=0;
         //     return this.wvector().multiplyScalar(0);
         // }
-        this.altitude=k-6371000;
+        this.altitude = k - 6371000;
         //Math.sqrt(gravity.x * gravity.x + gravity.y * gravity.y + gravity.z * gravity.z)
         gravity.normalize();
 
         this.atmosphere.updateConditions(0);
 
-        return this.wvector=gravity.multiplyScalar(this.scale*-1*6.673 * 5.972 * (1e13) * this.total_mass / (k * k));
+        return this.wvector = gravity.multiplyScalar(this.scale * -1 * 6.673 * 5.972 * (1e13) * this.total_mass / (k * k));
 
     }
 
-     
+
 
     drag() {
         this.dvector.setX(this.velocity.clone().normalize().x)
@@ -168,7 +179,7 @@ rocketArea(){
             this.dragCoefficient *
             this.atmosphere.density *
             this.rocketArea())
-        
+
         return this.dvector.multiplyScalar(this.scale);
     }
 
@@ -182,69 +193,109 @@ rocketArea(){
             this.liftCoeff *
             this.atmosphere.density *
             this.rocketArea())
-        this.lvector.applyAxisAngle(this.velocity,Math.PI/2)    
+        this.lvector.applyAxisAngle(this.velocity, Math.PI / 2)
         return this.lvector.multiplyScalar(this.scale);
     }
 
     thrust() {
-        if(this.fuel_mass==0) {this.tvector=new THREE.Vector3(0,0,0)
-        return this.tvector}
-        this.thrustMagnitude = this.massFlowRate() * this.exhaustVelocity() 
-        +  (this.exhaust_Pressure - this.atmosphere.getPressure()) *-1* this.exhaust_Area;
+        if (this.fuel_mass == 0) {
+            this.tvector = new THREE.Vector3(0, 0, 0)
+            return this.tvector
+        }
+        this.thrustMagnitude = this.massFlowRate() * this.exhaustVelocity()
+            + (this.exhaust_Pressure - this.atmosphere.getPressure()) * -1 * this.exhaust_Area;
         //Math.atan2(this.total_force.y / this.total_force.x, 0)
         this.tvector = new Vector(
             Math.cos(this.force_angle) * this.thrustMagnitude,
             Math.sin(this.force_angle) * this.thrustMagnitude,
             0
         )
-    //  if(this.altitude_status)
-    //  {
-    //     return this.tvector().multiplyScalar(0)
-    //  }
+        //  if(this.altitude_status)
+        //  {
+        //     return this.tvector().multiplyScalar(0)
+        //  }
 
         return this.tvector.multiplyScalar(this.scale);
     }
 
 
     total() {
-        this.total_force= this.weight().clone().add(this.thrust().clone().multiplyScalar(this.numberOfEngines));
+        this.total_force = this.weight().clone().add(this.thrust().clone().multiplyScalar(this.numberOfEngines));
         this.total_force.add(this.lift())
-          this.total_force.add(this.drag())
+        this.total_force.add(this.drag())
         return this.total_force;
     }
 
-    // torque(){
-    //     let t = this.lift().clone().multiplyScalar(this.stability_margin)
-    // }
-
-    new_acceleration(){
-      return this.acceleration=this.total().multiplyScalar(this.scale/this.total_mass)
+    
+    new_acceleration() {
+        return this.acceleration = this.total().clone().multiplyScalar(this.scale / this.total_mass)
     }
-     
-    new_velocity(delta_time){
+
+    new_velocity(delta_time) {
         this.velocity.add(this.new_acceleration().clone().multiplyScalar(delta_time))
-         return this.velocity;
+        return this.velocity;
     }
 
-    new_position(delta_time){
-      this.mesh.position.add(this.velocity.clone().multiplyScalar(delta_time));
+    new_position(delta_time) {
+        this.mesh.position.add(this.velocity.clone().multiplyScalar(delta_time));
         // this.mesh.x+=this.velocity.clone().x*(delta_time)
         // this.mesh.y+=this.velocity.clone().y*(delta_time)
         // this.mesh.z+=this.velocity.clone().z*(delta_time)
 
-      if(this.fuel_mass>=this.massFlowRate()*delta_time*this.numberOfEngines)
-        {
-        this.fuel_mass-= this.massFlowRate() * delta_time*this.numberOfEngines;
+        if (this.fuel_mass >= this.massFlowRate() * delta_time * this.numberOfEngines) {
+            this.fuel_mass -= this.massFlowRate() * delta_time * this.numberOfEngines;
         }
 
-       else
-        {
-            this.fuel_mass=0;
+        else {
+            this.fuel_mass = 0;
         }
-        this.total_mass=this.fuel_mass+this.rocket_mass
-        
-        
-    }  
+        this.total_mass = this.fuel_mass + this.rocket_mass
+
+
+    }
+
+    // stabilityVector() {
+    //     this.stabilityvector.setX(this.stability_margin * Number(Math.cos(this.force_angle).toFixed(10)))
+    //     this.stabilityvector.setY(this.stability_margin * Number(Math.sin(this.force_angle).toFixed(10)))
+    //     // console.log(this.stability_margin)
+    //     // console.log(Number(Math.cos(this.force_angle).toFixed(10)))
+    //     // console.log(this.stabilityvector)
+    //     return this.stabilityvector
+    // }
+
+    // torque() {
+    //     this.torquevector.add( this.lift().clone().cross(this.stabilityVector()))
+    //     return this.torquevector
+    // }
+
+    // moment_interia(){
+    //     return this.interia = 0.5*this.total_mass*this.stability_margin*this.stability_margin
+    // }
+
+    // new_angular_acceleration(){
+    //    return this.angular_acceleration = this.torque().clone().multiplyScalar(1/this.moment_interia())
+
+    // }
+
+    // new_angular_velocity(delta_time){
+    //     this.angular_velocity.add(this.new_angular_acceleration().clone().multiplyScalar(delta_time))
+    //     return this.angular_velocity
+
+    // }
+
+    // new_angle(delta_time){
+    //     this.angle.add(this.angular_velocity.clone().multiplyScalar(delta_time));
+    // }
+
+
+    // quaternion_calc(){
+    //     this.quaternion.set(cos(this.angle/2),
+    //     0*sin(this.angle/2),
+    //     0*sin(this.angle/2),
+    //     1*sin(this.angle/2))
+
+    // }
+
 
 }
 export default Rocket;

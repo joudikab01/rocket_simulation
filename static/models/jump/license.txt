@@ -1,0 +1,11 @@
+Model Information:
+* title:	V2701-JumpPad [2018 Spring #ue4jam]
+* source:	https://sketchfab.com/3d-models/v2701-jumppad-2018-spring-ue4jam-1ccc8fed930e45fd88b22532bad32ee2
+* author:	Zaxel (https://sketchfab.com/zaxel)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "V2701-JumpPad [2018 Spring #ue4jam]" (https://sketchfab.com/3d-models/v2701-jumppad-2018-spring-ue4jam-1ccc8fed930e45fd88b22532bad32ee2) by Zaxel (https://sketchfab.com/zaxel) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
