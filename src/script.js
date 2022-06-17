@@ -11,15 +11,6 @@ import { SceneUtils } from 'three/examples/jsm/utils/SceneUtils.js';
 import { Vector } from './physics/vector'
 
 
-/**
- * Base
- */
-const parameters = {
-  color: 0xff0000,
-  spin: () => {
-    gsap.to(sphere.rotation, 1, { y: mesh.rotation.y + Math.PI * 2 })
-  }
-}
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -27,6 +18,81 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 const rocket = new Rocket()
+const gui = new dat.GUI();
+
+
+rocket.engineType=1
+rocket.force_angle=Math.PI/2;
+rocket.rocketDiameter=2;
+rocket.rocket_mass=200
+rocket.fuel_mass=20000;
+rocket.drag_Coefficient=0.75
+rocket.lift_Coefficient=1;
+rocket.burnTime=210;
+
+rocket.exhaust_Area=2;
+rocket.exhaust_Pressure=9;
+rocket.numberOfEngines=1
+
+rocket.check_engine()
+
+
+/**
+ * Base
+ */
+
+ const Parameters = {
+
+  start_simulation:false,
+  
+
+  drag_Coefficient:-1,
+  lift_Coefficient:-1,
+  
+rocket_mass:rocket.rocket_mass,
+fuel_mass:rocket.fuel_mass,
+rocketDiameter:-1,
+numberOfEngines:1,
+
+launch_altitude:-1,
+
+thrustMagnitude:-1,
+
+//general engine proprties--------------------
+exhaust_Velocity:-1,
+mass_flow_rate:-1,
+exhaust_Area: rocket.exhaust_Area,
+exhaust_Pressure: rocket.exhaust_Pressure,
+
+//engine properties ------------------
+
+p0 : 7000000,
+at : 0.672,
+ro : 5.249,
+gamma : 1.1507,
+r4 : 8314,
+mw : 22.186,
+t0 : 3558.34,
+
+
+type:0,
+types:{ 
+   // f-1 engine refrenced by 1
+  firstengine(){
+    Parameters.type=1;
+    rocket.engineType=1;
+    rocket.check_engine()
+  },
+
+  secondengine(){
+    Parameters.type=2;
+    rocket.engineType=Parameters.type;
+    rocket.check_engine()
+  }
+
+}
+
+}
 
 
 /**
@@ -45,7 +111,7 @@ gltfLoader.load('/models/pad/scene.gltf',
   async (gltf) => {
     console.log('pad');
     gltf.scene.scale.set(1, 1, 1)
-    gltf.scene.position.set(0.1, 0.1, 0.1)
+    gltf.scene.position.set(0.1, -0.7, 0.1)
     pad.add(gltf.scene)
     scene.add(pad)
     sat_arry.push(pad),
@@ -203,7 +269,7 @@ const Base11 =new THREE.Mesh(
 land.rotation.x = Math.PI / 1.9;
 land.position.z = 0
 land.position.x = 0
-land.position.y = 0.0
+land.position.y = -1.0
 
 Base11.rotation.x = Math.PI / 1.9;
     Base11.position.z = 0
@@ -268,37 +334,153 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 /**
  * Debug
  */
-const gui = new dat.GUI({
-  // closed: true,
-  width: 400
-})
-// gui.hide()
-//gui.add(mesh.position, 'y').min(- 3).max(3).step(0.01).name('elevation')
-//gui.add(mesh, 'visible')
-//gui.add(material, 'wireframe')
+ 
 
-gui
-  .addColor(parameters, 'color')
-  .onChange(() => {
-    material.color.set(parameters.color)
-  })
-gui.add(parameters, 'spin')
+ const rocket_specs = gui.addFolder("rocket_specs");
+ const engine_attributes = gui.addFolder("engine_attributes");
+ const more_engine_specific = engine_attributes.addFolder("more_engine_specific");
+ const coefficients = gui.addFolder("coefficeients")
+ const engine_types = gui.addFolder("engine_types")
+ 
+ gui.add(Parameters,'start_simulation')
+ 
+ 
+ engine_attributes.open();
+ 
+ 
+ rocket_specs
+ .add(Parameters,"rocket_mass")
+ .onChange(() => {
+   rocket.rocket_mass=Parameters.rocket_mass;
+ });
+ 
+ rocket_specs
+ .add(Parameters,"fuel_mass")
+ .onChange(() => {
+   rocket.fuel_mass=Parameters.fuel_mass;
+ });
+ 
+ rocket_specs
+ .add(Parameters,"rocketDiameter")
+ .onChange(() => {
+   rocket.rocketDiameter=Parameters.rocketDiameter;
+ });
+ 
+ rocket_specs
+ .add(Parameters,"numberOfEngines").min(0)
+ .onChange(() => {
+   rocket.numberOfEngines=Parameters.numberOfEngines;
+ });
+ 
+ 
+ 
+ 
+ //general engine proprties--------------------
+ 
+ engine_attributes
+ .add(Parameters,"mass_flow_rate").min(0)
+ 
+ engine_attributes
+ .add(Parameters,"exhaust_Velocity").min(0)
+ 
+ engine_attributes
+ .add(Parameters,"exhaust_Area")
+ .onChange(() => {
+   rocket.exhaust_Area=Parameters.exhaust_Area;
+ });
+ 
+ engine_attributes
+ .add(Parameters,"exhaust_Pressure")
+ .onChange(() => {
+   rocket.exhaust_Pressure=Parameters.exhaust_Pressure;
+ });
+ //engine_attributes.add(Parameters,"thrustMagnitude")
+ 
+ 
+ more_engine_specific
+ .add(Parameters,"p0").min(4000000).max(10000000)
+ .onChange(() => {
+   rocket.p0=Parameters.p0;
+ });
+ 
+ more_engine_specific
+ .add(Parameters,"at").min(0.1).max(0.9).step(0.50)
+ .onChange(() => {
+   rocket.at=Parameters.at;
+ });
+ 
+ more_engine_specific
+ .add(Parameters,"ro").min(2).max(6).step(0.75)
+ .onChange(() => {
+   rocket.ro=Parameters.ro;
+ });
+ 
+ more_engine_specific
+ .add(Parameters,"gamma").min(1.100).max(1.5).step(0.09)
+ .onChange(() => {
+   rocket.gamma=Parameters.gamma;
+ });
+ 
+ more_engine_specific
+ .add(Parameters,"mw").min(10).max(25).step(2)
+ .onChange(() => {
+   rocket.mw=Parameters.mw;
+ });
+ 
+ more_engine_specific
+ .add(Parameters,"t0").min(3000).max(4000).step(100)
+ .onChange(() => {
+   rocket.t0=Parameters.t0;
+ });
+ 
+ 
+ //coefficients-----------
+ coefficients
+ .add(Parameters,"drag_Coefficient").min(0).max(2).step(0.25)
+ .onChange(() => {
+   rocket.drag_Coefficient=Parameters.drag_Coefficient;
+ });
+ 
+ coefficients
+ .add(Parameters,"lift_Coefficient").min(0).max(2).step(0.25)
+ .onChange(() => {
+   rocket.lift_Coefficient=Parameters.lift_Coefficient;
+ });
+ 
+ //engine_types -----------------
+ 
+ engine_types.add(Parameters.types,"firstengine")
+ engine_types.add(Parameters.types,"secondengine")
+ 
+ 
+ 
+ export default Parameters;
+ 
+
+
+
 
 
 function setupKeyControls() {
 
   document.onkeydown = function (e) {
     switch (e.keyCode) {
-      case 37:
-        rocket.force_angle += 1;
-
+      case 37:{
+        rocket.thrust_angle += 0.1;
         break;
+      }
+        
       case 38:
         //   thrustMagnitude.v += 0.01;
         break;
       case 39:
-        rocket.force_angle -= 1;
-        break;
+        {
+          rocket.thrust_angle -= 0.1;
+          
+          break;
+        }
+        
+        
       case 40:
         //thrustMagnitude.v -= 0.01;
         break;
@@ -307,7 +489,7 @@ function setupKeyControls() {
           async (gltf) => {
             console.log('ahmad');
             gltf.scene.scale.set(0.0019, 0.0019, 0.0019)
-            gltf.scene.position.set(0, 1, 0)
+            gltf.scene.position.set(0, 0, 0)
 
             rocket.mesh.add(gltf.scene)
             scene.add(rocket.mesh)
@@ -326,7 +508,7 @@ function setupKeyControls() {
           async (gltf) => {
             console.log('ahmad');
             gltf.scene.scale.set(0.05, 0.05, 0.05)
-            gltf.scene.position.set(0, 1, 0)
+            gltf.scene.position.set(0, 0, 0)
 
             rocket.mesh.add(gltf.scene)
             scene.add(rocket.mesh)
@@ -345,19 +527,7 @@ function setupKeyControls() {
 
 
 
-rocket.engineType = 1
-rocket.force_angle = Math.PI / 2;
-rocket.rocketDiameter = 2;
-rocket.rocket_mass = 2000
-rocket.fuel_mass = 200000;
-rocket.dragCoefficient = 0.75
-rocket.liftCoeff = 1;
-rocket.burnTime = 210;
-rocket.exhaust_Area = 2;
-rocket.exhaust_Pressure = 9;
-rocket.numberOfEngines = 10
-//rocket.stability_margin=10
-rocket.check_engine()
+
 
 /**
  * Animate
@@ -375,21 +545,22 @@ const tick = async () => {
   oldElapsedTime = elapsedTime;
 
 
-  rocket.new_velocity(delteTime)
-  rocket.new_position(delteTime)
-  //rocket.stabilityVector()
-  //rocket.new_angular_velocity(delteTime)
-
-  //rocket.mesh.position.add(rocket.thrust().clone().multiplyScalar(delteTime));
+  if(Parameters.start_simulation){
+      
+    rocket.new_velocity(delteTime)
+    rocket.new_position(delteTime)
+    }
+   
+  
   console.log(rocket)
   document.getElementById("rocket-speed").innerText =
-    rocket.velocity.getMagnitude().toFixed(3) + " ms";
+    rocket.velocity.length().toFixed(3) + " ms";
   document.getElementById("rocket-total-force").innerText =
-    rocket.total_force.getMagnitude().toFixed(3) + " N";
+    rocket.total_force.length().toFixed(3) + " N";
   document.getElementById("rocket-total-mass").innerText =
     rocket.total_mass.toFixed(3) + " kg";
   document.getElementById("rocket-force_angle").innerText =
-    rocket.force_angle.toFixed(3) + " Radian ";
+    rocket.thrust_angle.toFixed(3) + " Radian ";
   document.getElementById("rocket-fuel-mass").innerText =
     rocket.fuel_mass.toFixed(3) + " kg ";
   document.getElementById("rocket-mass").innerText =
@@ -404,7 +575,9 @@ const tick = async () => {
 
   //console.log(satellitee.position)
 
-  camera.position.y = rocket.mesh.position.y
+  camera.position.y = rocket.mesh.position.y+4
+  camera.position.x = rocket.mesh.position.x
+  //camera.position.z = rocket.mesh.position.z
   controls.target.y = rocket.mesh.position.y
   controls.target.x = rocket.mesh.position.x
   controls.target.z = rocket.mesh.position.z
@@ -421,7 +594,6 @@ const tick = async () => {
 }
 
 tick()
-export default parameters;
 
 
 

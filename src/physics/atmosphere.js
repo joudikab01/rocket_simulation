@@ -56,7 +56,8 @@ class Atmosphere {
         // need to compute it. Geopotential altitude is an
         // equivalent altitude assuming gravity is constant
         // with altitude.
-        this.geoAltitude = altitude * this.RE / (altitude + this.RE);
+        this.geoAltitude = altitude 
+        // this.RE / (altitude + this.RE);
         // Assign values to the reference this.temperature,
         // this.pressure, and altitude based on the current
         // altitude.
