@@ -156,7 +156,7 @@ var globeMaterialb = new THREE.MeshBasicMaterial({
   map: Sky2Texture,
   transparent: true,
   side: THREE.BackSide,
-  opacity: 1,
+  opacity: 0.55,
   shading: THREE.SmoothShading,
   // color: 0xaaaaaa,
   //  blending : THREE.AdditiveBlending,
@@ -173,7 +173,7 @@ var AtmosphereF = new THREE.MeshBasicMaterial({
   shininess: 40,
   transparent: true,
   side: THREE.FrontSide,
-  opacity: 0.5,
+  opacity: 0.3,
   shading: THREE.SmoothShading,
   color: 0xaaaaaa,
   blending: THREE.AdditiveBlending
@@ -182,7 +182,7 @@ var AtmosphereB = new THREE.MeshBasicMaterial({
   map: Sky2Texture,
   transparent: true,
   side: THREE.BackSide,
-  opacity: 1,
+  opacity: 0.55,
   shading: THREE.SmoothShading,
   // color: 0xaaaaaa,
   //blending : THREE.AdditiveBlending,
@@ -200,7 +200,7 @@ var CloudF = new THREE.MeshBasicMaterial({
   shininess: 40,
   transparent: true,
   side: THREE.FrontSide,
-  opacity: 0.5,
+  opacity: 0.3,
   shading: THREE.SmoothShading,
   color: 0xaaaaaa,
   blending: THREE.AdditiveBlending
@@ -209,7 +209,7 @@ var CloudB = new THREE.MeshBasicMaterial({
   map: Sky1Texture,
   transparent: true,
   side: THREE.BackSide,
-  opacity: 1,
+  opacity: 0.55,
   shading: THREE.SmoothShading,
   //color: 0xaaaaaa,
   //blending : THREE.AdditiveBlending,
@@ -227,7 +227,7 @@ var SkyF = new THREE.MeshBasicMaterial({
   shininess: 40,
   transparent: true,
   side: THREE.FrontSide,
-  opacity: 0.5,
+  opacity: 0.3,
   shading: THREE.SmoothShading,
   color: 0xaaaaaa,
   blending: THREE.AdditiveBlending
@@ -236,7 +236,7 @@ var SkyB = new THREE.MeshBasicMaterial({
   map: SkyTexture,
   transparent: true,
   side: THREE.BackSide,
-  opacity: 1,
+  opacity: 0.55,
   shading: THREE.SmoothShading,
   // color: 0xaaaaaa,
   // blending : THREE.AdditiveBlending,
@@ -460,6 +460,7 @@ function setupKeyControls() {
     switch (e.keyCode) {
       case 37: {
         rocket.thrust_angle += 0.1;
+        rocket.mesh.rotation.z+=0.01
         break;
       }
 
@@ -469,6 +470,7 @@ function setupKeyControls() {
       case 39:
         {
           rocket.thrust_angle -= 0.1;
+          rocket.mesh.rotation.z-=0.01
 
           break;
         }
@@ -539,13 +541,13 @@ const tick = async () => {
   if (Parameters.start_simulation) {
     rocket.new_velocity(delteTime)
     rocket.new_position(delteTime)
-    //console.log(delteTime)
+    console.log(rocket)
   }
   //console.log(rocket.lvector.angleTo(rocket.velocity))  
 
 
   document.getElementById("rocket-speed").innerText =
-    rocket.velocity.length().toFixed(3) * 3600 / 1000 + " Km/h";
+    rocket.velocity.length().toFixed(0) * 36 + " Km/h";
   document.getElementById("rocket-total-force").innerText =
     rocket.total_force.length().toFixed(3) + " N";
   document.getElementById("rocket-total-mass").innerText =
