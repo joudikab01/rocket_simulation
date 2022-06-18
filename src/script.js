@@ -21,18 +21,18 @@ const rocket = new Rocket()
 const gui = new dat.GUI();
 
 
-rocket.engineType=1
-rocket.force_angle=Math.PI/2;
-rocket.rocketDiameter=2;
-rocket.rocket_mass=200
-rocket.fuel_mass=20000;
-rocket.drag_Coefficient=0.75
-rocket.lift_Coefficient=1;
-rocket.burnTime=210;
+rocket.engineType = 1
+rocket.force_angle = Math.PI / 2;
+rocket.rocketDiameter = 2;
+rocket.rocket_mass = 200
+rocket.fuel_mass = 20000;
+rocket.drag_Coefficient = 0.75
+rocket.lift_Coefficient = 1;
+rocket.burnTime = 210;
 
-rocket.exhaust_Area=2;
-rocket.exhaust_Pressure=9;
-rocket.numberOfEngines=1
+rocket.exhaust_Area = 2;
+rocket.exhaust_Pressure = 9;
+rocket.numberOfEngines = 1
 
 rocket.check_engine()
 
@@ -41,56 +41,56 @@ rocket.check_engine()
  * Base
  */
 
- const Parameters = {
+const Parameters = {
 
-  start_simulation:false,
-  
-
-  drag_Coefficient:-1,
-  lift_Coefficient:-1,
-  
-rocket_mass:rocket.rocket_mass,
-fuel_mass:rocket.fuel_mass,
-rocketDiameter:-1,
-numberOfEngines:1,
-
-launch_altitude:-1,
-
-thrustMagnitude:-1,
-
-//general engine proprties--------------------
-exhaust_Velocity:-1,
-mass_flow_rate:-1,
-exhaust_Area: rocket.exhaust_Area,
-exhaust_Pressure: rocket.exhaust_Pressure,
-
-//engine properties ------------------
-
-p0 : 7000000,
-at : 0.672,
-ro : 5.249,
-gamma : 1.1507,
-r4 : 8314,
-mw : 22.186,
-t0 : 3558.34,
+  start_simulation: false,
 
 
-type:0,
-types:{ 
-   // f-1 engine refrenced by 1
-  firstengine(){
-    Parameters.type=1;
-    rocket.engineType=1;
-    rocket.check_engine()
-  },
+  drag_Coefficient: -1,
+  lift_Coefficient: -1,
 
-  secondengine(){
-    Parameters.type=2;
-    rocket.engineType=Parameters.type;
-    rocket.check_engine()
+  rocket_mass: rocket.rocket_mass,
+  fuel_mass: rocket.fuel_mass,
+  rocketDiameter: -1,
+  numberOfEngines: 1,
+
+  launch_altitude: -1,
+
+  thrustMagnitude: -1,
+
+  //general engine proprties--------------------
+  exhaust_Velocity: -1,
+  mass_flow_rate: -1,
+  exhaust_Area: rocket.exhaust_Area,
+  exhaust_Pressure: rocket.exhaust_Pressure,
+
+  //engine properties ------------------
+
+  p0: 7000000,
+  at: 0.672,
+  ro: 5.249,
+  gamma: 1.1507,
+  r4: 8314,
+  mw: 22.186,
+  t0: 3558.34,
+
+
+  type: 0,
+  types: {
+    // f-1 engine refrenced by 1
+    firstengine() {
+      Parameters.type = 1;
+      rocket.engineType = 1;
+      rocket.check_engine()
+    },
+
+    secondengine() {
+      Parameters.type = 2;
+      rocket.engineType = Parameters.type;
+      rocket.check_engine()
+    }
+
   }
-
-}
 
 }
 
@@ -130,120 +130,120 @@ scene.add(light);
 
 
 // Textures:
-const Sky3Texture =new THREE.TextureLoader().load('/textures/a.jpg');
-const Base =new THREE.TextureLoader().load('/textures/base.jpg');
-const SkyTexture =new THREE.TextureLoader().load('/textures/ff.jpg');
-const Sky1Texture =new THREE.TextureLoader().load('/textures/sky2.jpg');
-const Sky2Texture =new THREE.TextureLoader().load('/textures/space.jpg');
-const earthTexture =new THREE.TextureLoader().load('/textures/earth.jpg');
-const SpaceTexture =new THREE.TextureLoader().load('/textures/space1.jpg');
-scene.background=SpaceTexture;
+const Sky3Texture = new THREE.TextureLoader().load('/textures/a.jpg');
+const Base = new THREE.TextureLoader().load('/textures/base.jpg');
+const SkyTexture = new THREE.TextureLoader().load('/textures/ff.jpg');
+const Sky1Texture = new THREE.TextureLoader().load('/textures/sky2.jpg');
+const Sky2Texture = new THREE.TextureLoader().load('/textures/space.jpg');
+const earthTexture = new THREE.TextureLoader().load('/textures/earth.jpg');
+const SpaceTexture = new THREE.TextureLoader().load('/textures/space1.jpg');
+scene.background = SpaceTexture;
 
 
 
 // Earth
 var globeMaterialf = new THREE.MeshBasicMaterial({
   map: earthTexture,
- // shininess: 40,
- // transparent: true,
+  // shininess: 40,
+  // transparent: true,
   side: THREE.FrontSide,
   opacity: 0.9,
- // shading: THREE.SmoothShading,
-//  color: 0xaaaaaa,
+  // shading: THREE.SmoothShading,
+  //  color: 0xaaaaaa,
   //blending : THREE.AdditiveBlending
 });
 var globeMaterialb = new THREE.MeshBasicMaterial({
-  map:Sky2Texture,
+  map: Sky2Texture,
   transparent: true,
   side: THREE.BackSide,
-opacity: 1,
+  opacity: 1,
   shading: THREE.SmoothShading,
-// color: 0xaaaaaa,
-//  blending : THREE.AdditiveBlending,
- //depthTest: false
+  // color: 0xaaaaaa,
+  //  blending : THREE.AdditiveBlending,
+  //depthTest: false
 });
 
-var mesh1 = new SceneUtils.createMultiMaterialObject( new THREE.SphereGeometry(40,32,32),[globeMaterialf, globeMaterialb]);
+var mesh1 = new SceneUtils.createMultiMaterialObject(new THREE.SphereGeometry(40, 32, 32), [globeMaterialf, globeMaterialb]);
 //log.console('aaaaa');
 scene.add(mesh1)
 
 //Atmosphere
 var AtmosphereF = new THREE.MeshBasicMaterial({
-map:Sky2Texture,
-shininess: 40,
-transparent: true,
-side: THREE.FrontSide,
-opacity: 0.5,
-shading: THREE.SmoothShading,
-color: 0xaaaaaa,
-blending : THREE.AdditiveBlending
+  map: Sky2Texture,
+  shininess: 40,
+  transparent: true,
+  side: THREE.FrontSide,
+  opacity: 0.5,
+  shading: THREE.SmoothShading,
+  color: 0xaaaaaa,
+  blending: THREE.AdditiveBlending
 });
-var AtmosphereB= new THREE.MeshBasicMaterial({
-map:Sky2Texture,
-transparent: true,
-side: THREE.BackSide,
-opacity: 1,
-shading: THREE.SmoothShading,
-// color: 0xaaaaaa,
-//blending : THREE.AdditiveBlending,
-//depthTest: false
+var AtmosphereB = new THREE.MeshBasicMaterial({
+  map: Sky2Texture,
+  transparent: true,
+  side: THREE.BackSide,
+  opacity: 1,
+  shading: THREE.SmoothShading,
+  // color: 0xaaaaaa,
+  //blending : THREE.AdditiveBlending,
+  //depthTest: false
 });
 
-var Atmosphere1 = new SceneUtils.createMultiMaterialObject( new THREE.SphereGeometry(35,32,32),[AtmosphereF, AtmosphereB]);
+var Atmosphere1 = new SceneUtils.createMultiMaterialObject(new THREE.SphereGeometry(35, 32, 32), [AtmosphereF, AtmosphereB]);
 //log.console('aaaaa');
 scene.add(Atmosphere1)
 
 
 // Cloud
 var CloudF = new THREE.MeshBasicMaterial({
-map:Sky1Texture,
-shininess: 40,
-transparent: true,
-side: THREE.FrontSide,
-opacity: 0.5,
-shading: THREE.SmoothShading,
-color: 0xaaaaaa,
-blending : THREE.AdditiveBlending
+  map: Sky1Texture,
+  shininess: 40,
+  transparent: true,
+  side: THREE.FrontSide,
+  opacity: 0.5,
+  shading: THREE.SmoothShading,
+  color: 0xaaaaaa,
+  blending: THREE.AdditiveBlending
 });
-var CloudB= new THREE.MeshBasicMaterial({
-map:Sky1Texture,
-transparent: true,
-side: THREE.BackSide,
-opacity: 1,
-shading: THREE.SmoothShading,
-//color: 0xaaaaaa,
-//blending : THREE.AdditiveBlending,
-//depthTest: false
+var CloudB = new THREE.MeshBasicMaterial({
+  map: Sky1Texture,
+  transparent: true,
+  side: THREE.BackSide,
+  opacity: 1,
+  shading: THREE.SmoothShading,
+  //color: 0xaaaaaa,
+  //blending : THREE.AdditiveBlending,
+  //depthTest: false
 });
 
-var Cloud1 = new SceneUtils.createMultiMaterialObject( new THREE.SphereGeometry(30,32,32),[CloudF, CloudB]);
+var Cloud1 = new SceneUtils.createMultiMaterialObject(new THREE.SphereGeometry(30, 32, 32), [CloudF, CloudB]);
 //log.console('aaaaa');
 scene.add(Cloud1)
 
 
 //sky
 var SkyF = new THREE.MeshBasicMaterial({
-map:SkyTexture,
-shininess: 40,
-transparent: true,
-side: THREE.FrontSide,
-opacity: 0.5,
-shading: THREE.SmoothShading,
-color: 0xaaaaaa,
-blending : THREE.AdditiveBlending
+  map: SkyTexture,
+  shininess: 40,
+  transparent: true,
+  side: THREE.FrontSide,
+  opacity: 0.5,
+  shading: THREE.SmoothShading,
+  color: 0xaaaaaa,
+  blending: THREE.AdditiveBlending
 });
-var SkyB= new THREE.MeshBasicMaterial({
-map:SkyTexture,
-transparent: true,
-side: THREE.BackSide,
-opacity: 1,
-shading: THREE.SmoothShading,
-// color: 0xaaaaaa,
-// blending : THREE.AdditiveBlending,
-//depthTest: false
+var SkyB = new THREE.MeshBasicMaterial({
+  map: SkyTexture,
+  transparent: true,
+  side: THREE.BackSide,
+  opacity: 1,
+  shading: THREE.SmoothShading,
+  // color: 0xaaaaaa,
+  // blending : THREE.AdditiveBlending,
+  //depthTest: false
 });
 
-var Sky1 = new SceneUtils.createMultiMaterialObject( new THREE.SphereGeometry(19.999,32,32),[SkyF, SkyB]);
+var Sky1 = new SceneUtils.createMultiMaterialObject(new THREE.SphereGeometry(19.999, 32, 32), [SkyF, SkyB]);
 //log.console('aaaaa');
 scene.add(Sky1)
 
@@ -251,20 +251,20 @@ scene.add(Sky1)
 const land = new THREE.Mesh(
   new THREE.CircleGeometry(19.9, 32, 32),
   new THREE.MeshBasicMaterial({
-    side: THREE.BackSide, 
+    side: THREE.BackSide,
     map: Sky3Texture,
   })
 );
 scene.add(land);
 
-const Base11 =new THREE.Mesh(
-  new THREE.CircleGeometry(5,32,32),
+const Base11 = new THREE.Mesh(
+  new THREE.CircleGeometry(5, 32, 32),
   new THREE.MeshBasicMaterial({
- side: THREE.BackSide,
-  map:Base,
+    side: THREE.BackSide,
+    map: Base,
   })
-  );
- // scene.add(Base11);
+);
+// scene.add(Base11);
 
 land.rotation.x = Math.PI / 1.9;
 land.position.z = 0
@@ -272,10 +272,10 @@ land.position.x = 0
 land.position.y = -1.0
 
 Base11.rotation.x = Math.PI / 1.9;
-    Base11.position.z = 0
-    Base11.position.x = 0
-    Base11.position.y = 0.1
-   
+Base11.position.z = 0
+Base11.position.x = 0
+Base11.position.y = 0.1
+
 
 const sizes = {
   width: window.innerWidth,
@@ -283,16 +283,16 @@ const sizes = {
 }
 
 
-function addStar ( ) 
-{ const geometry = new THREE.SphereGeometry ( 0.25 , 24 , 24 ) ; 
-  const material= new THREE.MeshStandardMaterial({color:0xffff})
-  const star = new THREE.Mesh ( geometry , material ) ;
-  const [x,y,z]=Array(3).fill().map(()=>THREE.MathUtils.randFloatSpread(100));
- let a=Math.abs(x);
- let b=Math.abs(y);
- if ((a&&b)>40)
-star.position.set(x,y,z);
-   scene.add(star)
+function addStar() {
+  const geometry = new THREE.SphereGeometry(0.25, 24, 24);
+  const material = new THREE.MeshStandardMaterial({ color: 0xffff })
+  const star = new THREE.Mesh(geometry, material);
+  const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(100));
+  let a = Math.abs(x);
+  let b = Math.abs(y);
+  if ((a && b) > 40)
+    star.position.set(x, y, z);
+  scene.add(star)
 }
 Array(400).fill().forEach(addStar)
 
@@ -334,153 +334,146 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 /**
  * Debug
  */
- 
 
- const rocket_specs = gui.addFolder("rocket_specs");
- const engine_attributes = gui.addFolder("engine_attributes");
- const more_engine_specific = engine_attributes.addFolder("more_engine_specific");
- const coefficients = gui.addFolder("coefficeients")
- const engine_types = gui.addFolder("engine_types")
- 
- gui.add(Parameters,'start_simulation')
- 
- 
- engine_attributes.open();
- 
- 
- rocket_specs
- .add(Parameters,"rocket_mass")
- .onChange(() => {
-   rocket.rocket_mass=Parameters.rocket_mass;
- });
- 
- rocket_specs
- .add(Parameters,"fuel_mass")
- .onChange(() => {
-   rocket.fuel_mass=Parameters.fuel_mass;
- });
- 
- rocket_specs
- .add(Parameters,"rocketDiameter")
- .onChange(() => {
-   rocket.rocketDiameter=Parameters.rocketDiameter;
- });
- 
- rocket_specs
- .add(Parameters,"numberOfEngines").min(0)
- .onChange(() => {
-   rocket.numberOfEngines=Parameters.numberOfEngines;
- });
- 
- 
- 
- 
- //general engine proprties--------------------
- 
- engine_attributes
- .add(Parameters,"mass_flow_rate").min(0)
- 
- engine_attributes
- .add(Parameters,"exhaust_Velocity").min(0)
- 
- engine_attributes
- .add(Parameters,"exhaust_Area")
- .onChange(() => {
-   rocket.exhaust_Area=Parameters.exhaust_Area;
- });
- 
- engine_attributes
- .add(Parameters,"exhaust_Pressure")
- .onChange(() => {
-   rocket.exhaust_Pressure=Parameters.exhaust_Pressure;
- });
- //engine_attributes.add(Parameters,"thrustMagnitude")
- 
- 
- more_engine_specific
- .add(Parameters,"p0").min(4000000).max(10000000)
- .onChange(() => {
-   rocket.p0=Parameters.p0;
- });
- 
- more_engine_specific
- .add(Parameters,"at").min(0.1).max(0.9).step(0.50)
- .onChange(() => {
-   rocket.at=Parameters.at;
- });
- 
- more_engine_specific
- .add(Parameters,"ro").min(2).max(6).step(0.75)
- .onChange(() => {
-   rocket.ro=Parameters.ro;
- });
- 
- more_engine_specific
- .add(Parameters,"gamma").min(1.100).max(1.5).step(0.09)
- .onChange(() => {
-   rocket.gamma=Parameters.gamma;
- });
- 
- more_engine_specific
- .add(Parameters,"mw").min(10).max(25).step(2)
- .onChange(() => {
-   rocket.mw=Parameters.mw;
- });
- 
- more_engine_specific
- .add(Parameters,"t0").min(3000).max(4000).step(100)
- .onChange(() => {
-   rocket.t0=Parameters.t0;
- });
- 
- 
- //coefficients-----------
- coefficients
- .add(Parameters,"drag_Coefficient").min(0).max(2).step(0.25)
- .onChange(() => {
-   rocket.drag_Coefficient=Parameters.drag_Coefficient;
- });
- 
- coefficients
- .add(Parameters,"lift_Coefficient").min(0).max(2).step(0.25)
- .onChange(() => {
-   rocket.lift_Coefficient=Parameters.lift_Coefficient;
- });
- 
- //engine_types -----------------
- 
- engine_types.add(Parameters.types,"firstengine")
- engine_types.add(Parameters.types,"secondengine")
- 
- 
- 
- export default Parameters;
- 
+
+const rocket_specs = gui.addFolder("rocket_specs");
+const engine_attributes = gui.addFolder("engine_attributes");
+const more_engine_specific = engine_attributes.addFolder("more_engine_specific");
+const coefficients = gui.addFolder("coefficeients")
+const engine_types = gui.addFolder("engine_types")
+
+gui.add(Parameters, 'start_simulation')
+
+
+engine_attributes.open();
+
+
+rocket_specs
+  .add(Parameters, "rocket_mass")
+  .onChange(() => {
+    rocket.rocket_mass = Parameters.rocket_mass;
+  });
+
+rocket_specs
+  .add(Parameters, "fuel_mass")
+  .onChange(() => {
+    rocket.fuel_mass = Parameters.fuel_mass;
+  });
+
+rocket_specs
+  .add(Parameters, "rocketDiameter")
+  .onChange(() => {
+    rocket.rocketDiameter = Parameters.rocketDiameter;
+  });
+
+rocket_specs
+  .add(Parameters, "numberOfEngines").min(0)
+  .onChange(() => {
+    rocket.numberOfEngines = Parameters.numberOfEngines;
+  });
 
 
 
 
+//general engine proprties--------------------
+
+engine_attributes
+  .add(Parameters, "mass_flow_rate").min(0)
+
+engine_attributes
+  .add(Parameters, "exhaust_Velocity").min(0)
+
+engine_attributes
+  .add(Parameters, "exhaust_Area")
+  .onChange(() => {
+    rocket.exhaust_Area = Parameters.exhaust_Area;
+  });
+
+engine_attributes
+  .add(Parameters, "exhaust_Pressure")
+  .onChange(() => {
+    rocket.exhaust_Pressure = Parameters.exhaust_Pressure;
+  });
+//engine_attributes.add(Parameters,"thrustMagnitude")
+
+
+more_engine_specific
+  .add(Parameters, "p0").min(4000000).max(10000000)
+  .onChange(() => {
+    rocket.p0 = Parameters.p0;
+  });
+
+more_engine_specific
+  .add(Parameters, "at").min(0.1).max(0.9).step(0.50)
+  .onChange(() => {
+    rocket.at = Parameters.at;
+  });
+
+more_engine_specific
+  .add(Parameters, "ro").min(2).max(6).step(0.75)
+  .onChange(() => {
+    rocket.ro = Parameters.ro;
+  });
+
+more_engine_specific
+  .add(Parameters, "gamma").min(1.100).max(1.5).step(0.09)
+  .onChange(() => {
+    rocket.gamma = Parameters.gamma;
+  });
+
+more_engine_specific
+  .add(Parameters, "mw").min(10).max(25).step(2)
+  .onChange(() => {
+    rocket.mw = Parameters.mw;
+  });
+
+more_engine_specific
+  .add(Parameters, "t0").min(3000).max(4000).step(100)
+  .onChange(() => {
+    rocket.t0 = Parameters.t0;
+  });
+
+
+//coefficients-----------
+coefficients
+  .add(Parameters, "drag_Coefficient").min(0).max(2).step(0.25)
+  .onChange(() => {
+    rocket.drag_Coefficient = Parameters.drag_Coefficient;
+  });
+
+coefficients
+  .add(Parameters, "lift_Coefficient").min(0).max(2).step(0.25)
+  .onChange(() => {
+    rocket.lift_Coefficient = Parameters.lift_Coefficient;
+  });
+
+//engine_types -----------------
+
+engine_types.add(Parameters.types, "firstengine")
+engine_types.add(Parameters.types, "secondengine")
+
+export default Parameters;
 
 function setupKeyControls() {
 
   document.onkeydown = function (e) {
     switch (e.keyCode) {
-      case 37:{
+      case 37: {
         rocket.thrust_angle += 0.1;
         break;
       }
-        
+
       case 38:
         //   thrustMagnitude.v += 0.01;
         break;
       case 39:
         {
           rocket.thrust_angle -= 0.1;
-          
+
           break;
         }
-        
-        
+
+
       case 40:
         //thrustMagnitude.v -= 0.01;
         break;
@@ -526,9 +519,6 @@ function setupKeyControls() {
 }
 
 
-
-
-
 /**
  * Animate
  */
@@ -541,20 +531,21 @@ const tick = async () => {
   setupKeyControls()
 
   const elapsedTime = clock.getElapsedTime()
-  const delteTime = elapsedTime - oldElapsedTime;
-  oldElapsedTime = elapsedTime;
+  // const delteTime = elapsedTime - oldElapsedTime;
+  // oldElapsedTime = elapsedTime;
+  const delteTime = 0.01
 
 
-  if(Parameters.start_simulation){
-      
+  if (Parameters.start_simulation) {
     rocket.new_velocity(delteTime)
     rocket.new_position(delteTime)
-    }
-   
-  
-  console.log(rocket)
+    //console.log(delteTime)
+  }
+  //console.log(rocket.lvector.angleTo(rocket.velocity))  
+
+
   document.getElementById("rocket-speed").innerText =
-    rocket.velocity.length().toFixed(3) + " ms";
+    rocket.velocity.length().toFixed(3) * 3600 / 1000 + " Km/h";
   document.getElementById("rocket-total-force").innerText =
     rocket.total_force.length().toFixed(3) + " N";
   document.getElementById("rocket-total-mass").innerText =
@@ -575,7 +566,7 @@ const tick = async () => {
 
   //console.log(satellitee.position)
 
-  camera.position.y = rocket.mesh.position.y+4
+  camera.position.y = rocket.mesh.position.y + 4
   camera.position.x = rocket.mesh.position.x
   //camera.position.z = rocket.mesh.position.z
   controls.target.y = rocket.mesh.position.y
