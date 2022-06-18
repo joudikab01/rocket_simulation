@@ -460,7 +460,7 @@ function setupKeyControls() {
     switch (e.keyCode) {
       case 37: {
         rocket.thrust_angle += 0.1;
-        rocket.mesh.rotation.z+=0.01
+        rocket.mesh.rotation.z += 0.01
         break;
       }
 
@@ -470,7 +470,7 @@ function setupKeyControls() {
       case 39:
         {
           rocket.thrust_angle -= 0.1;
-          rocket.mesh.rotation.z-=0.01
+          rocket.mesh.rotation.z -= 0.01
 
           break;
         }
@@ -545,11 +545,28 @@ const tick = async () => {
   }
   //console.log(rocket.lvector.angleTo(rocket.velocity))  
 
+  if (rocket.velocity.y < 0) {
+    document.getElementById("rocket-speed").innerText =
+      -1 * rocket.velocity.length().toFixed(0) * 36 + " Km/h";
+  }
+  else {
+    document.getElementById("rocket-speed").innerText =
+      rocket.velocity.length().toFixed(0) * 36 + " Km/h";
+  }
 
-  document.getElementById("rocket-speed").innerText =
-    rocket.velocity.length().toFixed(0) * 36 + " Km/h";
   document.getElementById("rocket-total-force").innerText =
     rocket.total_force.length().toFixed(3) + " N";
+
+  document.getElementById("rocket-altitude").innerText =
+    rocket.altitude / 1000 + " Km";
+  if (rocket.acceleration.y < 0) {
+    document.getElementById("rocket-acceleration").innerText =
+    -1 * rocket.total_force.length().toFixed(3) * 10 + " ms^-2";
+  }
+  else {
+    document.getElementById("rocket-acceleration").innerText =
+      rocket.total_force.length().toFixed(3) * 10 + " ms^-2";
+  }
   document.getElementById("rocket-total-mass").innerText =
     rocket.total_mass.toFixed(3) + " kg";
   document.getElementById("rocket-force_angle").innerText =
